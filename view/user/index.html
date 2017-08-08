@@ -1,0 +1,172 @@
+
+<html>
+<head>
+	<title>User Entry</title>
+	<link rel='stylesheet' href='../css/estilos.css'>
+<script type="text/javascript" src="../js/jquery.min.js"> </script>	
+
+</head>
+<script type="text/javascript">
+	
+	function Register()
+	{
+
+var arr = document.getElementsByName('option'); 
+
+const name=document.getElementById("name").value
+const email=document.getElementById("email").value
+const age=document.getElementById("age").value
+const gender=arr[0].options[arr[0].selectedIndex].value;
+
+
+var ObjectUser=new User(name,email,age,gender);
+var ObjectFormatJson=JSON.stringify(ObjectUser);
+
+registerUser(ObjectFormatJson);
+
+	}
+
+
+function User(name,email,age,gender)
+{
+  this.name=name;
+  this.email=email;
+  this.age=age;
+  this.gender=gender;
+  return this;
+}
+
+
+
+function registerUser(user)
+{
+
+  $.ajax({
+    url:"http://localhost:3000/api/clinica",
+    contentType:"application/json;charset=utf-8",
+    type:"POST",
+    data:user,
+    dataType:"json",
+    async:false,
+    cache:false,
+    success: function (data, status, jqXHR) {
+      alert("success");
+
+    },
+    error: function (jqXHR, status) {
+     alert("error");
+   }     
+
+});//cierra ajax
+
+}
+
+
+function deleteUser(idUser)
+{
+var url="http://localhost:3000/api/clinica"+"/"+idUser;
+
+$.ajax({
+    url:url,
+    dataType:'json',
+    type:'delete',
+    async:false,
+    cache:false,
+    success:function(data){
+     alert("delete User");
+     },
+     error: function (jqXHR, status) {
+    alert.log("Error"+status+","+jqXHR);
+  }
+   });
+}
+
+function updateUser(idUser,ObjectUser)
+{
+var url="http://localhost:3000/api/clinica"+"/"+idUser;
+
+
+$.ajax({
+    url:url,
+    data:ObjectUser,
+    dataType:'json',
+    type:'PUT',
+    async:false,
+    cache:false,
+    success:function(data){
+     alert("Update User");
+     },
+     error: function (jqXHR, status) {
+    alert.log("Error"+status+","+jqXHR);
+  }
+   });
+}
+
+
+
+function getUser()
+{
+	var arrayUser=[];
+  var url="http://localhost:3000/api/clinica";
+  $.ajax({
+    url:url,
+    dataType:'json',
+    type:'get',
+    async:false,
+    cache:false,
+    success:function(data){
+      $(data).each(function(index,value){
+  
+
+ var User={_id:value._id,name:value.name,email:value.email,age:value.age,gender:value.gender};
+ 
+        arrayUser.push(EmergenciasIgnorada); 
+
+    });//ciererwr success
+
+    },
+    error: function (jqXHR, status) {
+    alert("Error"+status+","+jqXHR);
+  }
+
+
+});//cierra ajax
+
+return arrayUser;
+
+}//cierra funcion
+
+
+
+
+
+
+
+</script>
+
+
+<body>
+	<form class='contact' onsubmit="">
+		<h2 style="text-align:center"> Register User </h2>	
+		<div><label>Name:</label><input id="name" type='text' value=''></div>
+		<div><label>Email:</label><input id="email" type='text' value=''></div>
+		<div><label>AGE:</label><input id="age" type='text' value=''></div>
+		<div>
+		<label>Gender:</label>
+			<select name="option" size="2" multiple>
+
+				<option value="male">Male</option>
+
+				<option value="female">Female</option>
+
+			</select></div>
+
+			<div><input type='Button' value='Register' onclick="Register();"></div>
+		</form>
+	</body>
+
+
+
+	</html>
+
+
