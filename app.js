@@ -14,6 +14,7 @@ mongoose.connection.openUri('mongodb://localhost/clinica', function(err,res){
 });
 */
 
+
 //permite conexiones desde otras aplicaciones
 app.use(function(req,res,next)
 {
